@@ -55,7 +55,7 @@ The TLS versions and cipher suites in each spec can change with each OkHttp3 rel
 
 To check how secure OkHttp3 client is, click [here](https://www.cvedetails.com/vulnerability-list/vendor_id-17165/product_id-41238/Squareup-Okhttp3.html)
 
-### Server Certificate
+### ValidatingServer Certificate
 
 When the client receives the server certificate (SSL Handshake step (3)), the certificate is validated:
 
@@ -70,15 +70,13 @@ If these checks don't generate ```SslPolicyErrors```, the root certificate is co
 - Server certificate issuer must contain the reference certificate issuer CN and O (Organization Name).
 - Server certificate Thumbprint must be equal to the reference certificate Thumbprint.
 
-If the validation returns ```true```, meaning the server certificate is valid, the app sends the client certificate to the server.
+If the validation returns ```true```, it means the server certificate is valid.
 
-### Client certificate
+### Sending Client certificate
 
 On SSL Handshake step (5), the client certificate is sent to the server and verified on step (6).
 
 To be able to add the client certificate to the platform specific TrustStore, the certificate in ```pfx``` format and its passphrase are required.
-
-### How to use?
 
 ```cs
 // Root server certificate as Base64
