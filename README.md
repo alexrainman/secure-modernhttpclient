@@ -6,7 +6,7 @@
 - Disable http request caching.
 - Set minimum SSL protocol to TLS 1.2
 - TLS Mutual Authentication (2-Way Certificate Pinning).
-- SSL certificate verification via ServicePointManager is disabled by default for performance reasons.
+- SSL certificate verification via ServicePointManager disabled by default for performance reasons.
 
 ### TLS Mutual Authentication
  
