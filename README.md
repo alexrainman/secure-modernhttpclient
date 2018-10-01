@@ -25,7 +25,7 @@ Storing a certificate on our client apps ensures that any SSL request made match
 
 Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake:
 
-https://github.com/alexrainman/secure-modernhttpclient/blob/master/Certificate_Pinning.png
+![Certificate_Pinning.png](https://github.com/alexrainman/secure-modernhttpclient/blob/master/Certificate_Pinning.png)
  
 ### How it will be achieved?
 
@@ -144,7 +144,7 @@ var client = new HttpClient(handler);
 
 Enable Incoming Client Certificates on SSL Settings:
 
-https://github.com/alexrainman/secure-modernhttpclient/blob/master/azure_ssl.png
+![azure_ssl.png](https://github.com/alexrainman/secure-modernhttpclient/blob/master/azure_ssl.png)
 
 And, in you Web App web.config file:
 
