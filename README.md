@@ -1,10 +1,10 @@
 # Secure ModerHttpClient
 
-### What the library enforces?
+### What this library enforces?
 
 - Authorization Header is required.
 - Cache is disabled by default.
-- TLS Mutual Authentication (2-Way Certificate Pinning.
+- TLS Mutual Authentication (2-Way Certificate Pinning).
 
 ### Avoiding man-in-the-middle attacks
  
@@ -21,7 +21,7 @@ If the client is compromised and a unsafe certificate is installed, someone coul
 
 Storing a certificate on our client apps ensures that any SSL request made matches the one our server has but, this means you are only securing the client side with one way pinning.
 
-Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake.
+Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake:
  
 ### How it will be achieved?
 
