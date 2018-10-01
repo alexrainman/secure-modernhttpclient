@@ -77,33 +77,7 @@ If the validation returns ```true```, it means the server certificate matches th
 
 On SSL Handshake step (5), the client certificate is sent to the server and verified on step (6).
 
-These code snippets illustrate how the client certificate is added to the platform specific TrustStore, using the certificate in ```pfx``` format and its passphrase:
-
-```cs
-// iOS (NSUrlSession)
-// DataTaskDelegate.DidreceiveChallenge will send client credentials.certificate when challenge = AuthenticationMethodClientCertificate is received
-var pfxDataBytes = Convert.FromBase64String(pfxData);
-var options = NSDictionary.FromObjectsAndKeys(new object[] { pfxPassphrase }, new object[] { "passphrase" });
-var status = SecImportExport.ImportPkcs12(pfxDataBytes, options, out NSDictionary[] items);
-var identityRef = items[0]["identity"];
-var identity = new SecIdentity(identityRef.Handle);
-SecCertificate[] certs = { identity.Certificate };
-var credentials = new NSUrlCredential(identity, certs, NSUrlCredentialPersistence.ForSession);
-```
-```cs
-// Android (OkHttp3)
-// Add client certificate to TrustStore       
-var pfxDataBytes = Convert.FromBase64String(pfxData);
-var stream = new System.IO.MemoryStream(pfxDataBytes);
-KeyStore keyStore = KeyStore.GetInstance("PKCS12");
-keyStore.Load(stream, pfxPassphrase.ToCharArray());
-var kmf = KeyManagerFactory.GetInstance("X509");
-kmf.Init(keyStore, pfxPassphrase.ToCharArray());
-IKeyManager[] keyManagers = kmf.GetKeyManagers();
-SSLContext sslContext = SSLContext.GetInstance("TLS");
-sslContext.Init(keyManagers, null, null);
-clientBuilder.SslSocketFactory(sslContext.SocketFactory);
-```
+Adding the client certificate to the platform specific TrustStore, using the certificate in ```pfx``` format base64 string and its passphrase, is required.
 
 A certificate in pfx format can be created from ```client.crt```, ```client.key``` and a ```passphrase``` using openssl:
 
