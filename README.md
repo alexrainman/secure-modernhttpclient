@@ -1,12 +1,13 @@
 # Secure ModerHttpClient
 
-### What this library enforces?
+### What this library do?
 
-- Authorization Header is required.
-- Cache is disabled by default.
-- TLS Mutual Authentication (2-Way Certificate Pinning).
+- Require Authorization Header.
+- Disable client cache by default.
+- Set minimum SSL protocol to TLS 1.2
+- TLS Mutual Authentication (2-Way Certificate Pinning, SSL certificate verification via ServicePointManager is disabled by default for performance reasons).
 
-### Avoiding man-in-the-middle attacks
+### TLS Mutual Authentication
  
 By default, when making a TLS connection, the client check two things:
  
@@ -22,6 +23,8 @@ If the client is compromised and a unsafe certificate is installed, someone coul
 Storing a certificate on our client apps ensures that any SSL request made matches the one our server has but, this means you are only securing the client side with one way pinning.
 
 Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake:
+
+
  
 ### How it will be achieved?
 
@@ -58,14 +61,7 @@ The TLS versions and cipher suites in each spec can change with each OkHttp3 rel
 
 To check how secure OkHttp3 client is, click [here](https://www.cvedetails.com/vulnerability-list/vendor_id-17165/product_id-41238/Squareup-Okhttp3.html)
 
-Pre-flow:
-
-- Set minimum SSL protocol to TLS 1.2
-- SSL certificate verification via ServicePointManager is disabled by default for performance reasons.
-
-```cs
-ServicePointManager.ServerCertificateValidationCallback = null;
-```
+### Server Certificate
 
 When the client receives the server certificate (SSL Handshake step (3)), the certificate is validated:
 
@@ -88,42 +84,17 @@ On SSL Handshake step (5), the client certificate is sent to the server and veri
 
 To be able to add the client certificate to the platform specific TrustStore, the certificate in ```pfx``` format and its passphrase are required.
 
-```cs
-// iOS (NSUrlSession)
-// DataTaskDelegate.DidreceiveChallenge will send client credentials.certificate when challenge = AuthenticationMethodClientCertificate is received
-var pfxDataBytes = Convert.FromBase64String(pfxData);
-var options = NSDictionary.FromObjectsAndKeys(new object[] { pfxPassphrase }, new object[] { "passphrase" });
-var status = SecImportExport.ImportPkcs12(pfxDataBytes, options, out NSDictionary[] items);
-var identityRef = items[0]["identity"];
-var identity = new SecIdentity(identityRef.Handle);
-SecCertificate[] certs = { identity.Certificate };
-var credentials = new NSUrlCredential(identity, certs, NSUrlCredentialPersistence.ForSession);
-
-// Android (OkHttp3)
-// Add client certificate to TrustStore       
-var pfxDataBytes = Convert.FromBase64String(pfxData);
-var stream = new System.IO.MemoryStream(pfxDataBytes);
-KeyStore keyStore = KeyStore.GetInstance("PKCS12");
-keyStore.Load(stream, pfxPassphrase.ToCharArray());
-var kmf = KeyManagerFactory.GetInstance("X509");
-kmf.Init(keyStore, pfxPassphrase.ToCharArray());
-IKeyManager[] keyManagers = kmf.GetKeyManagers();
-SSLContext sslContext = SSLContext.GetInstance("TLS");
-sslContext.Init(keyManagers, null, null);
-clientBuilder.SslSocketFactory(sslContext.SocketFactory);
-```
-
 ### How to use?
 
 ```cs
 // Root server certificate as Base64
-var rawServerCertData = "SERVER_CERT";
+var rawServerCertData = "SERVER_CERT_BASE64";
 var serverCertBytes = Convert.FromBase64String(rawServerCertData);
 var serverCertificateRef = new X509Certificate2(serverCertBytes);
 
 // Client certificate in pfx format as Base64 and its passphrase
-var pfxData = "CLIENT_CERT";
-var pfxPassphrase = "xxxxxxxxxx";
+var pfxData = "CLIENT_PFX_CERT_BASE64";
+var pfxPassphrase = "CLIENT_PFX_CERT_PASSPHRASE";
 
 var handler = new NativeMessageHandler(pfxData, pfxPassphrase, serverCertificateRef);
 var client = new HttpClient(handler);
@@ -153,7 +124,7 @@ Where each key will match the certificate you will be sending from the client ap
 
 ### Requirements
 
-Server Certificate reference (root)
+Server Certificate reference (root):
 
 - During setup, use any raw ServerCertData. Run the app once making an HTTPS call and the library will write the server root certificate raw data as Base64 to the console.
 
