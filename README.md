@@ -5,7 +5,8 @@
 - Require Authorization Header.
 - Disable http request caching.
 - Set minimum SSL protocol to TLS 1.2
-- TLS Mutual Authentication (2-Way Certificate Pinning. SSL certificate verification via ServicePointManager is disabled by default for performance reasons).
+- TLS Mutual Authentication (2-Way Certificate Pinning).
+- SSL certificate verification via ServicePointManager is disabled by default for performance reasons.
 
 ### TLS Mutual Authentication
  
@@ -24,7 +25,7 @@ Storing a certificate on our client apps ensures that any SSL request made match
 
 Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake:
 
-
+![Certificate_Pinning (2).png](/.attachments/Certificate_Pinning%20(2)-ce5cf059-d2dc-4eea-80cd-3723745784cf.png)
  
 ### How it will be achieved?
 
@@ -79,6 +80,52 @@ On SSL Handshake step (5), the client certificate is sent to the server and veri
 To be able to add the client certificate to the platform specific TrustStore, the certificate in ```pfx``` format and its passphrase are required.
 
 ```cs
+// iOS (NSUrlSession)
+// DataTaskDelegate.DidreceiveChallenge will send client credentials.certificate when challenge = AuthenticationMethodClientCertificate is received
+var pfxDataBytes = Convert.FromBase64String(pfxData);
+var options = NSDictionary.FromObjectsAndKeys(new object[] { pfxPassphrase }, new object[] { "passphrase" });
+var status = SecImportExport.ImportPkcs12(pfxDataBytes, options, out NSDictionary[] items);
+var identityRef = items[0]["identity"];
+var identity = new SecIdentity(identityRef.Handle);
+SecCertificate[] certs = { identity.Certificate };
+var credentials = new NSUrlCredential(identity, certs, NSUrlCredentialPersistence.ForSession);
+
+// Android (OkHttp3)
+// Add client certificate to TrustStore       
+var pfxDataBytes = Convert.FromBase64String(pfxData);
+var stream = new System.IO.MemoryStream(pfxDataBytes);
+KeyStore keyStore = KeyStore.GetInstance("PKCS12");
+keyStore.Load(stream, pfxPassphrase.ToCharArray());
+var kmf = KeyManagerFactory.GetInstance("X509");
+kmf.Init(keyStore, pfxPassphrase.ToCharArray());
+IKeyManager[] keyManagers = kmf.GetKeyManagers();
+SSLContext sslContext = SSLContext.GetInstance("TLS");
+sslContext.Init(keyManagers, null, null);
+clientBuilder.SslSocketFactory(sslContext.SocketFactory);
+```
+
+A certificate in pfx format can be created from ```client.crt```, ```client.key``` and a ```passphrase``` using openssl:
+
+```
+openssl pkcs12 -export -out client.pfx -inkey client.key -in client.crt
+```
+
+Convert ```pfx``` certificate to Base64 using PowerShell:
+
+```
+$fileContentBytes = get-content 'path-to\client.pfx' -Encoding Byte
+[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'path-to\pfx-bytes.txt'
+```
+
+### How to use?
+
+During development, make an https call using a random server certificate base64 and the library will write the server root certificate raw data as Base64 to the console:
+
+```
+SERVER_CERT_REF=server_cert_base64
+```
+
+```cs
 // Root server certificate as Base64
 var rawServerCertData = "SERVER_CERT_BASE64";
 var serverCertBytes = Convert.FromBase64String(rawServerCertData);
@@ -96,7 +143,7 @@ var client = new HttpClient(handler);
 
 Enable Incoming Client Certificates on SSL Settings:
 
-
+![Screen Shot 2018-09-19 at 12.03.13 PM.png](/.attachments/Screen%20Shot%202018-09-19%20at%2012.03.13%20PM-9f4d68f3-85c6-424c-b912-a088b537da83.png)
 
 And, in you Web App web.config file:
 
@@ -113,28 +160,3 @@ And, in you Web App web.config file:
 ```
 
 Where each key will match the certificate you will be sending from the client app.
-
-### Requirements
-
-Server Certificate reference (root):
-
-- During setup, use any raw ServerCertData. Run the app once making an HTTPS call and the library will write the server root certificate raw data as Base64 to the console.
-
-```
-SERVER_CERT_REF=server_cert_ref_base64
-```
-
-Client certificate in ```pfx``` format and its passphrase.
-
-- A certificate in pfx format can be created from ```client.crt```, ```client.key``` and a ```passphrase``` using openssl:
-
-```
-openssl pkcs12 -export -out client.pfx -inkey client.key -in client.crt
-```
-
-- Convert ```pfx``` certificate to Base64 using PowerShell:
-
-```
-$fileContentBytes = get-content 'path-to\client.pfx' -Encoding Byte
-[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'path-to\pfx-bytes.txt'
-```
