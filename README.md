@@ -1,6 +1,6 @@
 # Secure ModerHttpClient
 
-### What this library do?
+### What the library do?
 
 - Require Authorization Header.
 - Disable client cache by default.
