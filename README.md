@@ -94,7 +94,7 @@ $fileContentBytes = get-content 'path-to\client.pfx' -Encoding Byte
 
 ### How to use?
 
-During development, make an https call using a random server certificate base64 and the library will write the server root certificate raw data as Base64 to the console:
+During development, make an https call using a random server certificate Base64 and the library will write the server root certificate raw data to the console:
 
 ```
 SERVER_CERT_REF=server_cert_base64
