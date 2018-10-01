@@ -25,7 +25,7 @@ Storing a certificate on our client apps ensures that any SSL request made match
 
 Let's ensure the backend receives a valid certificate from the client for **TLS Mutual Authentication** during SSL Handshake:
 
-![Certificate_Pinning (2).png](/.attachments/Certificate_Pinning%20(2)-ce5cf059-d2dc-4eea-80cd-3723745784cf.png)
+ADD_IMAGE
  
 ### How it will be achieved?
 
@@ -143,7 +143,7 @@ var client = new HttpClient(handler);
 
 Enable Incoming Client Certificates on SSL Settings:
 
-![Screen Shot 2018-09-19 at 12.03.13 PM.png](/.attachments/Screen%20Shot%202018-09-19%20at%2012.03.13%20PM-9f4d68f3-85c6-424c-b912-a088b537da83.png)
+ADD_IMAGE
 
 And, in you Web App web.config file:
 
