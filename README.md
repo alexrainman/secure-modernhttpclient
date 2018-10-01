@@ -105,11 +105,11 @@ And, in you Web App web.config file:
 ```xml
 <configuration>
    <appSettings>
-      <add key="certificate.subject" value="CN=o*.teamworkcards-api-prod.p.azurewebsites.net"/>
-      <add key="certificate.issuerCN" value="CN=*.teamworkcards-api-prod.p.azurewebsites.net"/>
-      <add key="certificate.issuerOU" value="OU=Mobility Solutions"/>
-      <add key="certificate.issuerO" value="O=Schlumberger"/>
-      <add key="certificate.thumbprint" value="A4212A08E1F039BDBD1A908999C99A61F0E5883A"/> 
+      <add key="certificate.subject" value="CN=o*.SERVER_HOST"/>
+      <add key="certificate.issuerCN" value="CN=*.SERVER_HOST"/>
+      <add key="certificate.issuerOU" value="OU=ISSUER_NAME"/>
+      <add key="certificate.issuerO" value="O=ISSUER_ORGANIZATION"/>
+      <add key="certificate.thumbprint" value="CERT_THUMBPRINT"/> 
    </appSettings>
 </configuration>
 ```
@@ -137,6 +137,6 @@ openssl pkcs12 -export -out client.pfx -inkey client.key -in client.crt
 - Convert ```pfx``` certificate to Base64 using PowerShell:
 
 ```
-$fileContentBytes = get-content 'C:\Users\areyes27\Desktop\client.pfx' -Encoding Byte
-[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'C:\Users\areyes27\Desktop\pfx-bytes.txt'
+$fileContentBytes = get-content 'path-to\client.pfx' -Encoding Byte
+[System.Convert]::ToBase64String($fileContentBytes) | Out-File 'path-to\pfx-bytes.txt'
 ```
