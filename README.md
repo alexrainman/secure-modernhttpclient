@@ -89,7 +89,8 @@ var identityRef = items[0]["identity"];
 var identity = new SecIdentity(identityRef.Handle);
 SecCertificate[] certs = { identity.Certificate };
 var credentials = new NSUrlCredential(identity, certs, NSUrlCredentialPersistence.ForSession);
-
+```
+```cs
 // Android (OkHttp3)
 // Add client certificate to TrustStore       
 var pfxDataBytes = Convert.FromBase64String(pfxData);
