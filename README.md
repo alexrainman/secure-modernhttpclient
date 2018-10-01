@@ -37,12 +37,6 @@ NSURLSession supports the HTTP/1.1, SPDY, and HTTP/2 protocols. HTTP/2 support i
 Starting in iOS 9.0 and OS X 10.11, a new security feature called **App Transport Security (ATS)** is enabled by default for all HTTP connections made with NSURLSession. ATS requires that HTTP connections use HTTPS (RFC 2818).
  
 App Transport Security (ATS) is available to apps and app extensions, and is enabled by default. It improves privacy and data integrity by ensuring your app’s network connections employ only industry-standard protocols and ciphers without known weaknesses so, your app does not accidentally leak transmitted data to malicious parties.
-
-By configuring this key’s values in your app’s _Info.plist_ file, you can customize the security of your network connections in a variety of ways:
-
-- Allow insecure communication with particular servers, while maintaining ATS protections elsewhere in your app, which we will not do.
-- Allow insecure loads for web views or for media, while maintaining ATS protections elsewhere in your app, which we will not do.
-- Enable new security features such as Certificate Transparency (to be explored)
  
 **Android**: OkHttp3
 
