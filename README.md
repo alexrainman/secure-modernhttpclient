@@ -77,7 +77,7 @@ If the validation returns ```true```, it means the server certificate matches th
 
 On SSL Handshake step (5), the client certificate is sent to the server and verified on step (6).
 
-To be able to add the client certificate to the platform specific TrustStore, the certificate in ```pfx``` format and its passphrase are required.
+These code snippets illustrate how the client certificate is added to the platform specific TrustStore, using the certificate in ```pfx``` format and its passphrase:
 
 ```cs
 // iOS (NSUrlSession)
