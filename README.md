@@ -55,7 +55,7 @@ The TLS versions and cipher suites in each spec can change with each OkHttp3 rel
 
 To check how secure OkHttp3 client is, click [here](https://www.cvedetails.com/vulnerability-list/vendor_id-17165/product_id-41238/Squareup-Okhttp3.html)
 
-### ValidatingServer Certificate
+### Validating Server Certificate
 
 When the client receives the server certificate (SSL Handshake step (3)), the certificate is validated:
 
