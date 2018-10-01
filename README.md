@@ -71,7 +71,7 @@ If these checks don't generate ```SslPolicyErrors```, the root certificate is co
 - Server certificate issuer must contain the reference certificate issuer CN and O (Organization Name).
 - Server certificate Thumbprint must be equal to the reference certificate Thumbprint.
 
-If the validation returns ```true```, it means the server certificate is valid.
+If the validation returns ```true```, it means the server certificate matches the one referenced in the app.
 
 ### Sending Client certificate
 
