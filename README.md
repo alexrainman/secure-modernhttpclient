@@ -77,7 +77,7 @@ If the validation returns ```true```, it means the server certificate matches th
 
 On SSL Handshake step (5), the client certificate is sent to the server and verified on step (6).
 
-Adding the client certificate to the platform specific TrustStore, using the certificate in ```pfx``` format base64 string and its passphrase, is required.
+To add the client certificate to the platform specific TrustStore, the ```pfx``` certificate Base64 and its passphrase are required.
 
 A certificate in pfx format can be created from ```client.crt```, ```client.key``` and a ```passphrase``` using openssl:
 
