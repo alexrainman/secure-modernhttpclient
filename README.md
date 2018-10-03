@@ -5,7 +5,7 @@
 - Request Authorization Header required.
 - Response caching disabled.
 - Minimum SSL protocol to TLS 1.2
-- Implement TLS Mutual Authentication (2-Way Certificate Pinning).
+- TLS Mutual Authentication (2-Way Certificate Pinning).
 - SSL certificate verification via ServicePointManager disabled for performance reasons.
 
 ### TLS Mutual Authentication
