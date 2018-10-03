@@ -2,11 +2,11 @@
 
 ### What the library do?
 
-- Require Authorization Header.
-- Disable http request caching.
-- Set minimum SSL protocol to TLS 1.2
-- TLS Mutual Authentication (2-Way Certificate Pinning).
-- SSL certificate verification via ServicePointManager disabled by default for performance reasons.
+- Request Authorization Header required.
+- Response caching disabled.
+- Minimum SSL protocol to TLS 1.2
+- Implement TLS Mutual Authentication (2-Way Certificate Pinning).
+- SSL certificate verification via ServicePointManager disabled for performance reasons.
 
 ### TLS Mutual Authentication
  
