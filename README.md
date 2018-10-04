@@ -110,7 +110,11 @@ var serverCertificateRef = new X509Certificate2(serverCertBytes);
 var pfxData = "CLIENT_PFX_CERT_BASE64";
 var pfxPassphrase = "CLIENT_PFX_CERT_PASSPHRASE";
 
-var handler = new NativeMessageHandler(pfxData, pfxPassphrase, serverCertificateRef);
+var handler = new NativeMessageHandler(pfxData, pfxPassphrase, serverCertificateRef)
+{
+    DisableCaching = true,
+    Timeout = new TimeSpan(0, 0, 9)
+};
 var client = new HttpClient(handler);
 ```
 
