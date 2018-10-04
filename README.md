@@ -4,7 +4,6 @@ Available on NuGet: https://www.nuget.org/packages/secure-modernhttpclient/ [![N
 
 ### What the library do?
 
-- Response caching disabled.
 - Minimum SSL protocol to TLS 1.2
 - TLS Mutual Authentication (2-Way Certificate Pinning).
 - SSL certificate verification via ServicePointManager disabled for performance reasons.
