@@ -4,7 +4,6 @@ Available on NuGet: https://www.nuget.org/packages/secure-modernhttpclient/ [![N
 
 ### What the library do?
 
-- Request Authorization Header required.
 - Response caching disabled.
 - Minimum SSL protocol to TLS 1.2
 - TLS Mutual Authentication (2-Way Certificate Pinning).
