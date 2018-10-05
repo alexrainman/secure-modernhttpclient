@@ -27,8 +27,6 @@ Let's ensure the backend receives a valid certificate from the client for **TLS 
 ![Certificate_Pinning.png](https://github.com/alexrainman/secure-modernhttpclient/blob/master/Certificate_Pinning.png)
  
 ### How it will be achieved?
-
-This library brings the latest platform-specific networking libraries to Xamarin applications via a custom HttpClient handler.
  
 **iOS**: NSUrlSession
  
