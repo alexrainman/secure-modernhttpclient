@@ -1,6 +1,6 @@
 # Secure ModerHttpClient
 
-Available on NuGet: https://www.nuget.org/packages/secure-modernhttpclient/ [![NuGet](https://img.shields.io/nuget/v/secure-modernhttpclient.svg?label=NuGet)]
+Available on NuGet: https://www.nuget.org/packages/secure-modernhttpclient/![NuGet](https://img.shields.io/nuget/v/secure-modernhttpclient.svg?label=NuGet)
 
 ### What the library do?
 
